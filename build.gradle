@@ -1,0 +1,56 @@
+group 'com.shengsiyuan'
+version '1.0'
+
+apply plugin: 'java'
+apply plugin: 'com.google.protobuf'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        // ASS
+        // UMES GRADLE 2.12 OR HIGHER. Use plugin version 0.7.5 with earlier
+        // gradle versions
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.0'
+    }
+}
+
+protobuf {
+    generatedFilesBaseDir = "src"
+
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.2.0"
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.4.0'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+
+            grpc {
+                setOutputSubDir "java"
+
+            }
+        }
+    }
+}
+
+dependencies {
+    compile "io.netty:netty-all:4.1.10.Final"
+    compile 'com.google.protobuf:protoc:3.5.1-1'
+    compile 'com.google.protobuf:protobuf-java-util:3.5.1'
+    compile 'org.apache.thrift:libthrift:0.11.0'
+    compile 'io.grpc:grpc-netty:1.4.0'
+    compile 'io.grpc:grpc-protobuf:1.4.0'
+    compile 'io.grpc:grpc-stub:1.4.0'
+}
