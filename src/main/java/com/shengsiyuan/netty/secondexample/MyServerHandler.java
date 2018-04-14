@@ -17,7 +17,7 @@ public class MyServerHandler extends SimpleChannelInboundHandler<String> {
         System.out.println("channelRead0");
         System.out.println("remoteAddress:" + ctx.channel().remoteAddress() + ", msg:"+msg);
 
-        ctx.channel().writeAndFlush("from  server:" + UUID.randomUUID());
+        ctx.channel().writeAndFlush("from  server:" + UUID.randomUUID());//channel针对客户端的一个连接
 
     }
 

@@ -36,7 +36,7 @@ public class TestHttpServerHandler extends SimpleChannelInboundHandler<HttpObjec
             }
 
             //读取客户端的请求并返回响应
-            ByteBuf content = Unpooled.copiedBuffer("Hello World", CharsetUtil.UTF_8);
+            ByteBuf content = Unpooled.copiedBuffer("Hello World", CharsetUtil.UTF_8);//比ByteBuffer性能高
 
             FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, content);
             response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");

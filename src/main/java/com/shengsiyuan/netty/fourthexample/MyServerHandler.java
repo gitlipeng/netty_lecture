@@ -5,7 +5,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 
-public class MyServerHandler extends ChannelInboundHandlerAdapter {
+public class MyServerHandler extends ChannelInboundHandlerAdapter {//适配器
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
