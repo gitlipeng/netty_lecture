@@ -14,6 +14,7 @@ import java.util.Set;
 
 public class NioTest12 {
     public static void main(String[] args) throws IOException {
+        //监听5个端口号，每个都可以有客户端连接，不需要多个线程，一个线程处理所有的连接
         int[] ports = new int[5];
 
         ports[0] = 5000;
@@ -22,31 +23,33 @@ public class NioTest12 {
         ports[3] = 5003;
         ports[4] = 5004;
 
-        Selector selector = Selector.open();
+        Selector selector = Selector.open();//
 
         System.out.println(SelectorProvider.provider().getClass());
 
         for(int i = 0;i < ports.length; ++i) {
             ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
-            serverSocketChannel.configureBlocking(false);
-            ServerSocket serverSocket = serverSocketChannel.socket();
+            serverSocketChannel.configureBlocking(false);//非阻塞模式
+            ServerSocket serverSocket = serverSocketChannel.socket();//与这个Channel通道关联的ServerSocket
             InetSocketAddress address = new InetSocketAddress(ports[i]);
             serverSocket.bind(address);
 
             //selector注册到channel中，感兴趣的key是接受连接
-            serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+            SelectionKey selectionKey = serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
             System.out.println("监听端口: " + ports[i]);
         }
 
+
         while (true) {
+            Set<SelectionKey> selectionKeysss = selector.keys();
+            System.out.println("1:" + selectionKeysss.size() + ",2:"+selector.selectedKeys().size());
+
             int numbers = selector.select();
             System.out.println("numbers: " + numbers);
-            selector.selectedKeys();
-
             Set<SelectionKey> selectionKeys = selector.selectedKeys();
 
-            System.out.println("selectionKyes + " + selectionKeys);
+            System.out.println("selectionKeys + " + selectionKeys + "," + selectionKeys.size());
 
             Iterator<SelectionKey> iter = selectionKeys.iterator();
 
@@ -54,7 +57,7 @@ public class NioTest12 {
                 SelectionKey selectionKey = iter.next();
 
                 if (selectionKey.isAcceptable()) {
-                    ServerSocketChannel serverSocketChannel = (ServerSocketChannel) selectionKey.channel();
+                    ServerSocketChannel serverSocketChannel = (ServerSocketChannel) selectionKey.channel();//通过key返回绑定的Channle对象
                     SocketChannel socketChannel = serverSocketChannel.accept();
 
                     socketChannel.configureBlocking(false);

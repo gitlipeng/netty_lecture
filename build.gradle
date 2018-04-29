@@ -46,7 +46,7 @@ protobuf {
 }
 
 dependencies {
-    compile "io.netty:netty-all:4.1.10.Final"
+    compile "io.netty:netty-all:4.1.15.Final"
     compile 'com.google.protobuf:protoc:3.5.1-1'
     compile 'com.google.protobuf:protobuf-java-util:3.5.1'
     compile 'org.apache.thrift:libthrift:0.11.0'

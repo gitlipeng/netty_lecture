@@ -34,11 +34,18 @@ public class NioServer {
 
         while (true) {
             try {
+                System.out.println("1:等待");
                 selector.select();//阻塞，一直等到他关注的事件发生时，返回他关注的事件的数量
 
                 Set<SelectionKey> selectionKeys = selector.selectedKeys();//判断selectionkey是什么样的事件
-
+                System.out.println("2:keyssize:"+selectionKeys.size());
                 selectionKeys.forEach(selectionKey -> {
+//                    try {
+//                        Thread.sleep(2000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+                    System.out.println("3:" + selectionKey.hashCode());
                     final SocketChannel client;
                     try {
                         if (selectionKey.isAcceptable()) {
@@ -63,7 +70,7 @@ public class NioServer {
                                 //写数据
                                 Charset charset = Charset.forName("utf-8");
                                 String receivedMessage = String.valueOf(charset.decode(readBuffer).array());
-                                System.out.println(receivedMessage);
+//                                System.out.println(receivedMessage);
 
                                 String senderKey = null;
 

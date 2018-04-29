@@ -1,11 +1,9 @@
 package com.shengsiyuan.nio;
 
 import com.sun.org.apache.bcel.internal.generic.Select;
+import io.netty.buffer.ByteBufInputStream;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -51,8 +49,9 @@ public class NioClient {
                                 while ((true)) {
                                     System.out.println("wait");
                                     writeBuffer.clear();
-
-                                    InputStreamReader inputStreamReader = new InputStreamReader(System.in);
+                                    Thread.sleep(200);
+//                                    InputStreamReader inputStreamReader = new InputStreamReader(System.in);
+                                    InputStreamReader inputStreamReader = new InputStreamReader(new StringBufferInputStream("fff"));
                                     BufferedReader br = new BufferedReader(inputStreamReader);
                                     String sendMessage = br.readLine();
 
