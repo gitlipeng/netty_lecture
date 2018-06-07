@@ -4,6 +4,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MyServerHandler extends SimpleChannelInboundHandler<String> {
     /**
@@ -18,6 +20,8 @@ public class MyServerHandler extends SimpleChannelInboundHandler<String> {
         System.out.println("remoteAddress:" + ctx.channel().remoteAddress() + ", msg:"+msg);
 
         ctx.channel().writeAndFlush("from  server:" + UUID.randomUUID());//channel针对客户端的一个连接
+
+
 
     }
 

@@ -7,6 +7,9 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * 服务器启动
  * A客户端连接 啥也不做
@@ -20,19 +23,32 @@ import io.netty.util.concurrent.GlobalEventExecutor;
  */
 public class MyChatServerHandler extends SimpleChannelInboundHandler<String> {
     private static ChannelGroup channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-
+    ExecutorService executorService = Executors.newCachedThreadPool();
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
         Channel channel = ctx.channel();//A发送消息
+        final long id = Thread.currentThread().getId();
 
-        channelGroup.forEach(ch -> {
-            if (channel != ch) {
-                ch.writeAndFlush(channel.remoteAddress() + "发来了消息：" + msg + "\n");
-            }else{
-                ch.writeAndFlush("自己发出的消息：" + msg + "\n");
+            System.out.println(id + "在新开的线程中执行耗时操作");
 
+            System.out.println("Thread:"+id + "睡眠5秒");
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
+            System.out.println("Thread:"+id + "睡眠5秒结束");
+            channelGroup.forEach(ch -> {
+                if (channel != ch) {
+                    ch.writeAndFlush(channel.remoteAddress() + "发来了消息：" + msg + "\n");
+                }else{
+                    ch.writeAndFlush("自己发出的消息：" + msg + "\n");
+
+                }
+            });
+
+
+
 
     }
 
@@ -40,6 +56,7 @@ public class MyChatServerHandler extends SimpleChannelInboundHandler<String> {
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
 
+        System.out.println("加入Thread:"+Thread.currentThread().getId());
         //告诉其他客户端XXX上线
         channelGroup.writeAndFlush("[服务器] -"+channel.remoteAddress() + "加入\n");
 
@@ -57,6 +74,8 @@ public class MyChatServerHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+
+        System.out.println("上线Thread:"+Thread.currentThread().getId());
         Channel channel = ctx.channel();
         System.out.println(channel.remoteAddress() + " 上线");
     }

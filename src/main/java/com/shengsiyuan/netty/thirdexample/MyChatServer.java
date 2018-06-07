@@ -8,8 +8,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class MyChatServer {
     public static void main(String[] args) throws Exception{
-        EventLoopGroup boodGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        EventLoopGroup boodGroup = new NioEventLoopGroup(1);
+        EventLoopGroup workerGroup = new NioEventLoopGroup(1);
 
         try{
             ServerBootstrap serverBootstrap = new ServerBootstrap();
