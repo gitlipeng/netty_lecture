@@ -12,12 +12,12 @@ public class MyClientHander extends SimpleChannelInboundHandler<Long>{
     protected void channelRead0(ChannelHandlerContext ctx, Long msg) throws Exception {
         System.out.println("client output:" + ctx.channel().remoteAddress() + ", msg:"+msg);
 
-        ctx.writeAndFlush("from client:"+ LocalDateTime.now());
+//        ctx.writeAndFlush("from client:"+ LocalDateTime.now());
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-//        ctx.writeAndFlush(123456l);
+//        ctx.writeAndFlush(123456);
 //        ctx.writeAndFlush(1l);
 //        ctx.writeAndFlush(2l);
 //        ctx.writeAndFlush(3l);
