@@ -10,6 +10,7 @@ public class MyServerInitializer extends ChannelInitializer<SocketChannel> {
         ChannelPipeline pipeline = ch.pipeline();
         pipeline.addLast(new MyByteToLongDecoder2());
         pipeline.addLast(new MyLongToByteEncoder());
+        pipeline.addLast(new MyLongToStringDecoder());
         pipeline.addLast("MyServerHandler",new MyServerHandler());//自定义
 
 
