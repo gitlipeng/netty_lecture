@@ -22,6 +22,7 @@ import java.util.concurrent.Executors;
  *
  */
 public class MyChatServerHandler extends SimpleChannelInboundHandler<String> {
+    private int count;
     private static ChannelGroup channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     ExecutorService executorService = Executors.newCachedThreadPool();
     @Override
@@ -29,18 +30,22 @@ public class MyChatServerHandler extends SimpleChannelInboundHandler<String> {
         Channel channel = ctx.channel();//A发送消息
         final long id = Thread.currentThread().getId();
 
-            System.out.println(id + "在新开的线程中执行耗时操作");
+//            System.out.println("Thread:"+id + "睡眠5秒");
+//            try {
+//                Thread.sleep(5000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            System.out.println("Thread:"+id + "睡眠5秒结束");
 
-            System.out.println("Thread:"+id + "睡眠5秒");
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println("Thread:"+id + "睡眠5秒结束");
+            System.out.println("当前的hashCode：" + this.hashCode() + ",当前的count: " +(++count));
+
+        System.out.println("服务端收到消息：" + msg);
+
             channelGroup.forEach(ch -> {
                 if (channel != ch) {
                     ch.writeAndFlush(channel.remoteAddress() + "发来了消息：" + msg + "\n");
+
                 }else{
                     ch.writeAndFlush("自己发出的消息：" + msg + "\n");
 
@@ -56,7 +61,7 @@ public class MyChatServerHandler extends SimpleChannelInboundHandler<String> {
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
 
-        System.out.println("加入Thread:"+Thread.currentThread().getId());
+        System.out.println("加入Thread:"+Thread.currentThread().getId() + ",hashCode:"+this.hashCode() + ",count:"+ (++count));
         //告诉其他客户端XXX上线
         channelGroup.writeAndFlush("[服务器] -"+channel.remoteAddress() + "加入\n");
 

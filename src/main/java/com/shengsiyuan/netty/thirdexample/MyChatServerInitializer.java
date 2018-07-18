@@ -17,6 +17,9 @@ import io.netty.util.concurrent.EventExecutorGroup;
 public class MyChatServerInitializer extends ChannelInitializer<SocketChannel>{
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
+        MyChatServerHandler myChatServerHandler = new MyChatServerHandler();
+
+        System.out.println("MyChatServerInitializer:" + this.hashCode() + ",myChatServerHandler: " + myChatServerHandler.hashCode());
 
         final EventExecutorGroup work_group = new DefaultEventExecutorGroup(10);
 
@@ -25,6 +28,6 @@ public class MyChatServerInitializer extends ChannelInitializer<SocketChannel>{
         pipeline.addLast(new DelimiterBasedFrameDecoder(4096, Delimiters.lineDelimiter()));//以后重点讲解众多handler
         pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8));
         pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));//注意不要丢失 不然会出错误 接收不到消息
-        pipeline.addLast(work_group,new MyChatServerHandler());
+        pipeline.addLast(work_group,myChatServerHandler);
     }
 }
